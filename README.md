@@ -7,6 +7,6 @@ To run the application:
 
 eg. 
 
-git.token=1ce767a2d2702f2faab1269ab0bc126aed5eb888
-
+git.token=1111222233333x33344445667djkjkt677sdw444
+          
 3.  In web browser, access http://localhost:8080/
