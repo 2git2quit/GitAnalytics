@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Git Api</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"></script>
+  </head>
+<body>
+
+
+
+<h2>Summary Based on Number of Commits</h2>
+<table id="summaryBasedOnCommits" class="display">
+<thead>
+  <th>Committed By</th><th>No. of Commits</th><th>Last Commit Date</th>
+</thead>
+<tbody>
+<tr th:each="analytic: ${analytics}">
+  <td th:text="${analytic.committer.name}" />
+  <td th:text="${analytic.total_commits}" />
+  <td th:text="${analytic.latest_commit}" />
+  
+</tr>
+</tbody>
+</table>
+
+<h2>Summary Based on Most Recent Commits</h2>
+<table id="summaryBasedOnLastCommit" class="display">
+<thead>
+  <th>Committed By</th><th>No. of Commits</th><th>Last Commit Date</th>
+</thead>
+<tbody>
+<tr th:each="analytic: ${analytics}">
+  <td th:text="${analytic.committer.name}" />
+  <td th:text="${analytic.total_commits}" />
+  <td th:text="${analytic.latest_commit}" />
+  
+</tr>
+</tbody>
+</table>
+
+<h2>List of Commits</h2>
+<table id="committers" class="display">
+<thead>
+  <th>Committed By</th><th>Email</th><th>Commit Date</th>
+</thead>
+<tbody>
+<tr th:each="commit: ${commits}">
+  <td th:text="${commit.commit.committer.name}" />
+  <td th:text="${commit.commit.committer.email}" />
+  <td th:text="${commit.commit.committer.date}" />
+</tr>
+</tbody>
+</table>
+
+
+<script>
+$(document).ready(function() {
+    var table = $('#committers').DataTable({bFilter: false, bInfo: false});
+    var summary = $('#summaryBasedOnCommits').dataTable(
+    		{bFilter: false, bInfo: false, paging: false,
+    		    "iDisplayLength": -1,
+    		    "aaSorting":[
+    		        [1,"desc"]
+    		    ]	
+   });
+   var summary2 = $('#summaryBasedOnLastCommit').dataTable(
+		   {bFilter: false, bInfo: false, paging: false,
+		    "iDisplayLength": -1,
+		    "aaSorting":[
+		        [2,"desc"]
+		    ]	
+   });
+
+} );
+
+
+</script>
+</body>
+</html>
