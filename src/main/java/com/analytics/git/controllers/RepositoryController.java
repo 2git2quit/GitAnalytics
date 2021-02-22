@@ -37,7 +37,16 @@ import com.analytics.git.model.SortedAnalytics;
 @Controller
 public class RepositoryController {
 
-	@Value("${git.user}")
+    @Value("${git.authentication.enabled}")
+    String gitAuth;
+
+    @Value("${git.basicauth.enabled}")
+    String gitBasicAuth;
+
+    @Value("${git.oauth2.enabled}")
+    String gitOAuth2;
+
+  	@Value("${git.user}")
 	String gitUser;
 
 	@Value("${git.password}")
@@ -56,22 +65,31 @@ public class RepositoryController {
 	public String searchRepositories(@RequestParam("q") String q, Model model) {
 		String url = "https://api.github.com/search/repositories?q=is:public " + q;
 		RestTemplate tmpl = new RestTemplate();
-		Projects projects = tmpl.getForObject(url, Projects.class);
+        ResponseEntity<Projects> entities = tmpl.exchange(url, HttpMethod.GET,
+                new HttpEntity<Projects>(createHeaders()), Projects.class);
+        Projects projects = entities.getBody();
+
+		//Projects projects = tmpl.getForObject(url, Projects.class);
 
 		model.addAttribute("projects", projects.getItems());
 		return "project";
 
 	}
 
-	private HttpHeaders createHeaders(String username, String password) {
+	private HttpHeaders createHeaders() {
 		return new HttpHeaders() {
 			{
-				String auth = username + ":" + password;
+				String auth = gitUser + ":" + gitPassword;
 				byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
 				String authHeader = "Basic " + new String(encodedAuth);
-				//set("Authorization", authHeader);
-				String token = "token " + gitToken;
-				set("Authorization",token);
+                String token = "token " + gitToken;
+                if (new Boolean(gitAuth)) {
+				    if (new Boolean(gitBasicAuth)) {
+                        set("Authorization", authHeader);
+                    } else  if (new Boolean(gitOAuth2)) {
+                        set("Authorization", token);
+                    }
+                }
 				set("Accept", "application/vnd.github.v3+json");
 			}
 		};
@@ -83,7 +101,7 @@ public class RepositoryController {
 
 		RestTemplate tmpl = new RestTemplate();
 		ResponseEntity<Commits[]> entities = tmpl.exchange(url, HttpMethod.GET,
-				new HttpEntity<Commits>(createHeaders(gitUser, gitPassword)), Commits[].class);
+				new HttpEntity<Commits>(createHeaders()), Commits[].class);
 		List<Commits> commits = Arrays.asList(entities.getBody());
 		List<Analytics> analytics = generateAnalytics(commits);
 		model.addAttribute("commits", commits);
