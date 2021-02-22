@@ -25,27 +25,6 @@
 <script>
 $(document).ready(function() {
     var table = $('#repo').DataTable();
-   /*
-    $('#repo tbody tr').on('click', 'tr', function () {
-    	alert($(this).attr('class'));
-    	$.ajax
-        ({ 
-            url: 'reservebook.php',
-            data: {"repoID": id},
-            type: 'post',
-            success: function(result)
-            {
-                $('.modal-box').text(result).fadeIn(700, function() 
-                {
-                    setTimeout(function() 
-                    {
-                        $('.modal-box').fadeOut();
-                    }, 2000);
-                });
-            }
-        });
-    } );  
-    */
 } );
 
 function analyze(repo,owner) {
