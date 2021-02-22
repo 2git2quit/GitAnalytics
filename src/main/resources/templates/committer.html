@@ -9,10 +9,10 @@
     <script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"></script>
   </head>
 <body>
+<h2 style="display:inline">Git Repository : </h2>
+<h2 style="display:inline" th:text="${repo}"></h2>
 
-
-
-<h2>Summary Based on Number of Commits</h2>
+<h2>Most Number of Commits</h2>
 <table id="summaryBasedOnCommits" class="display">
 <thead>
   <th>Committed By</th><th>No. of Commits</th><th>Last Commit Date</th>
@@ -27,7 +27,7 @@
 </tbody>
 </table>
 
-<h2>Summary Based on Most Recent Commits</h2>
+<h2>Most Recent Commits</h2>
 <table id="summaryBasedOnLastCommit" class="display">
 <thead>
   <th>Committed By</th><th>No. of Commits</th><th>Last Commit Date</th>

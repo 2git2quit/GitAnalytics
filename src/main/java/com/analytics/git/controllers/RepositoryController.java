@@ -104,6 +104,7 @@ public class RepositoryController {
 				new HttpEntity<Commits>(createHeaders()), Commits[].class);
 		List<Commits> commits = Arrays.asList(entities.getBody());
 		List<Analytics> analytics = generateAnalytics(commits);
+        model.addAttribute("repo", repo);
 		model.addAttribute("commits", commits);
 		Collections.sort(analytics, new SortedAnalytics());
 		model.addAttribute("analytics", analytics);
