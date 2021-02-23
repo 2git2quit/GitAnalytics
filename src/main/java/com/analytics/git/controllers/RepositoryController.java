@@ -63,7 +63,7 @@ public class RepositoryController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public String searchRepositories(@RequestParam("q") String q, Model model) {
-		String url = "https://api.github.com/search/repositories?q=is:public " + q;
+		String url = "https://api.github.com/search/repositories?q=is:public " + q + "&per_page=100";
 		RestTemplate tmpl = new RestTemplate();
         ResponseEntity<Projects> entities = tmpl.exchange(url, HttpMethod.GET,
                 new HttpEntity<Projects>(createHeaders()), Projects.class);
@@ -97,7 +97,7 @@ public class RepositoryController {
 
 	@GetMapping("/commits")
 	public String listCommits(@RequestParam("owner") String owner, @RequestParam("repo") String repo, Model model) {
-		String url = "https://api.github.com/repos/" + owner + "/" + repo + "/commits";
+		String url = "https://api.github.com/repos/" + owner + "/" + repo + "/commits?per_page=100";
 
 		RestTemplate tmpl = new RestTemplate();
 		ResponseEntity<Commits[]> entities = tmpl.exchange(url, HttpMethod.GET,
